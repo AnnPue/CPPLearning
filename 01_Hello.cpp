@@ -6,7 +6,7 @@ int main(){
     int n =10;
     for (int i = 0; i < n; i ++){
         cout << i << endl;
-        cout << 12;
+        cout << 12 << endl;
         cout << "i love love you" << endl;
     }
     return 0;
