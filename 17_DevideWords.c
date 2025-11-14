@@ -22,7 +22,7 @@ int main() {
     //用变量token接收返回值
     char *token = strtok(str, " ");
     
-    while (token != NULL) {//分割结束时, strtok返回NULL, 被token接收
+    while (token != NULL) {//strtok分割结束时, 返回NULL, 被token接收, 循环结束
         i++;
         printf("第%d个单词：%s\n", i, token);
         token = strtok(NULL, " ");//继续分割字符串, 传入NULL表示继续上一次的分割
