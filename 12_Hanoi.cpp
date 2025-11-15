@@ -14,8 +14,8 @@ void Hanoi(int n, char from, char assist, char to){
 
 int main(){
     cout << "请输入汉诺塔层数" << endl;
-    int n;
-    cin >> n;
+    int n=4;
+    //cin >> n;
     Hanoi(n, 'l', 'm', 'r');
     return 0;
 }
