@@ -39,7 +39,7 @@ int main() {
                 flag = false;
                 break;
             }
-        } else {}
+        }
     }
     if (ss.empty() && flag) {
         cout << "true";
