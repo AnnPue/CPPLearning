@@ -54,6 +54,6 @@ int main() {
     int k;
     cout << "请输入你特别关心的人的位置（从0开始计数）：" << endl;
     cin >> k;
-    cout << sol.timeRequiredToBuy(tickets, k) << endl; // 输出: 13
+    cout << sol.timeRequiredToBuy(tickets, k) << endl;
     return 0;
 }
