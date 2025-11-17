@@ -15,24 +15,23 @@ public:
     买完一张票后，如果这个人还需要购买更多的票，他会移动到队尾，重新排队。
     如果这个人已经买完了他需要的所有票，他会离开队列。 
 
-    你需要计算并返回第 k 个人买完他所有票总共需要的时间。 
+    你需要计算并返回第 k 个人买完他所有票时的时间。 
      */
     int timeRequiredToBuy(vector<int>& tickets, int k) {
         queue<int> q;
-        int n=tickets.size();
-        for(int i=1;i<=n;i++){
+        for(int i = 1; i <= tickets.size(); i++){
             q.push(i);
         }
-        int time=0;
+        int time = 0, index;
         while(!q.empty()){
-            int tem=q.front();
+            index = q.front();
             time++;
             q.pop();
-            if(tickets[tem-1]>1){
-                q.push(tem);
-                tickets[tem-1]--;
+            if(tickets[index-1] > 1){
+                q.push(index);
+                tickets[index-1]--;
             }
-            else if(tem-1==k){
+            else if(index-1 == k){
                 return time;
             }
         }
