@@ -17,9 +17,45 @@
 #include <iostream>
 #include <queue>
 #include <string>
-
 using namespace std;
 
+class Solution {
+public:
+    string predictVictory(string s) {
+        int n = s.length();
+        queue<int> r_queue, d_queue;
+ 
+        for (int i = 0; i < n; ++i) {
+            if (s[i] == 'R') {
+                r_queue.push(i);
+            } else {
+                d_queue.push(i);
+            }
+        }
+ 
+        while (!r_queue.empty() && !d_queue.empty()) {
+            int r_index = r_queue.front();
+            r_queue.pop();
+            int d_index = d_queue.front();
+            d_queue.pop();
+ 
+            if (r_index < d_index) {
+                r_queue.push(r_index + n);
+            } else {
+                d_queue.push(d_index + n);
+            }
+        }
+ 
+        return r_queue.empty() ? "Dark" : "Red";
+        
+    }
+};
+
 int main(){
-    
+    cout << "请输入一个仅包含 D 和 R 的字符串，代表参议员的阵营和初始顺序" << endl;
+    string s;
+    cin >> s;
+    Solution sol;
+    cout << sol.predictVictory(s) << endl;
+    return 0;
 }
