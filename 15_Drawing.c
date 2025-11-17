@@ -47,6 +47,16 @@ int GetValid(){//获得合规数值作为高度or宽度
 	}
 }
 
+int GetCommand(){
+	int command;
+	scanf(" %d", &command);
+	if(command != 1 && command != 2 && command != 3 && command != -1){
+		printf("类型不符合要求，请重新来！\n");
+		return GetCommand();//递归调用直到获得合法输入,实现了循环效果
+	}
+	else return command;
+}
+
 void Solve(int command, int wid, int hei, char fill){//根据command调用相应函数
 	switch (command) {//其他输入已经被排除, 到这里command只能是1or2or3
 		case 1: {
@@ -70,11 +80,14 @@ int main(){
 	while(1){
 		printf("请输入要绘制的图形：1-墙  2-框  3-三角， 输入-1结束。注意：对于所有输入我们采用能用则用，不行报错的原则。\n");
 
-		if ((scanf(" %d", &command) != 1 || command < 1 || command > 3) && command != -1) {//输入指令并检查, 注意排除输入-1情况
-			printf("类型不符合要求，请重新来！\n");
-			while (getchar() != '\n');//清空输入流, 防止死循环或影响后续
-			continue;//回到line70
-		}else if (command == -1) break;//输入-1退出循环, 同时也是退出程序
+		// if ((scanf(" %d", &command) != 1 || command < 1 || command > 3) && command != -1) {//输入指令并检查, 注意排除输入-1情况
+		// 	printf("类型不符合要求，请重新来！\n");
+		// 	while (getchar() != '\n');//清空输入流, 防止死循环或影响后续
+		// 	continue;//回到line70
+		// }else if (command == -1) break;//输入-1退出循环, 同时也是退出程序
+
+		command = GetCommand();
+		if (command == -1) break;//输入-1退出循环, 同时也是退出程序
 
 		while (getchar() != '\n');//清空输入流, 防止死循环或影响后续
 		printf("请输入图形的填充字母\n");

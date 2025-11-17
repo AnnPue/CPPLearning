@@ -19,19 +19,19 @@ public:
      */
     int timeRequiredToBuy(vector<int>& tickets, int k) {
         queue<int> q;
-        for(int i = 1; i <= tickets.size(); i++){
-            q.push(i);
+        for(int i = 0; i < tickets.size(); i++){
+            q.push(i);//将队列中的人用编号表示，编号从0开始
         }
         int time = 0, index;
-        while(!q.empty()){
-            index = q.front();
-            time++;
-            q.pop();
-            if(tickets[index-1] > 1){
-                q.push(index);
-                tickets[index-1]--;
+        while(1){
+            index = q.front();//获得队首之人编号
+            time++;//计时
+            q.pop();//队首之人买一张票，离开队首
+            if(tickets[index] > 1){//若还需买票
+                q.push(index);//回到队尾
+                tickets[index]--;//要买票的数量减一
             }
-            else if(index-1 == k){
+            else if(index == k){//若为特别关心的人且买完票了
                 return time;
             }
         }
@@ -48,7 +48,7 @@ int main() {
     cout << "请输入每个人需要购买的票数：" << endl;
     while(n--){
         cin >> t;
-        tickets.push_back(t);
+        tickets.push_back(t);//将每个人需要购买的票数存入tickets数组
     }
     int k;
     cout << "请输入你特别关心的人的位置（从0开始计数）：" << endl;
