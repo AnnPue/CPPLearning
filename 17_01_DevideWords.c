@@ -36,7 +36,7 @@ int main() {
 
 
 /*
- * 17_DevideWords.c
+ * 17_01_DevideWords.c
  *
  * Created on: 2025.11.14 Fri.
  * 
