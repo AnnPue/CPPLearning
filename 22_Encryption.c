@@ -1,17 +1,45 @@
+/*
+本程序可获得字符串，并对其中字母做处理：将其减少一个整数key值*/
 #include <stdio.h>
 #include <string.h>
 
 int main(){
-    printf("请输入key值（整数【1，10】之间：\n");
-    int key;
-    while (scanf(" %d", key) != 1 || key < 1 || key > 10){
-        while (getchar() != '\n');
-        printf("输入的数值不对，【1，10】之间，key为10时，程序退出。\n"); 
-    }
-    printf("key值是：%d\n", key);
-    printf("请输入明文字符串：\n");
-    string plaintext;
-    scanf("%s", plaintext);
+    printf("有一种加密算法，若明文是字母则将其减少一个\
+整数key值(整数【1，10】之间），若不是则保持不变。\n");
+    printf("请输入一段明文，根据key，加密后并输出其密文。\n");
+    printf("当输入key值为10时，程序退出\n");
+    int key = -1;
+    char letters[10000];
+    while(1){
+        printf("请输入key值(整数【1，10】之间):\n");
+        
+        while (scanf(" %d", &key) != 1 || key < 1 || key > 10){
+            while (getchar() != '\n');
+            printf("输入的数值不对，【1，10】之间，key为10时，程序退出。\n"); 
+        }
+        if (key == 10) break;
 
+        printf("key值是：%d\n", key);
+        printf("请输入明文字符串：\n");
+        while (getchar() != '\n');
+
+        //从stdin获得一行字符，存入letters
+        fgets(letters, sizeof(letters), stdin);
+        int i;
+        printf("明文字符串是：");
+        for (i = 0; i < strlen(letters); i++){//遍历输出字符
+            printf("%c", letters[i]);
+        }
+        printf("加密后的密文字符串是：");
+        for (i = 0; i < strlen(letters); i++){
+            if (('A' <= letters[i] && letters[i] <= 'Z')\
+            || ('a' <= letters[i] && letters[i] <= 'z')) {//若是字母，则处理
+                letters[i] -= key;
+            }
+            printf("%c", letters[i]);//输出处理过的字符
+        }
+    }
+    printf("key值是：10\n");
+    //system("pause");
     return 0;
 }
