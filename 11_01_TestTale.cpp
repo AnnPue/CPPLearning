@@ -13,7 +13,9 @@
 输出描述：
 对于每道题，输出按照上述坊间传说应选的选项字母（A、B、C 或 D），每个字母独占一行
 */
-#include <iostream> //有待完善
+#include <iostream> 
+#include <string>
+#include <vector>
 using namespace std;
 int main() {
     // 关闭同步加速输入输出
@@ -28,7 +30,7 @@ int main() {
             cin >> options[i];  // 输入选项 A、B、C、D
         }
 
-        int lengths[4];
+        vector<int> lengths(4);
         for (int i = 0; i < 4; ++i) {
             lengths[i] = options[i].length();  // 获取每个选项的长度
         }
@@ -49,7 +51,7 @@ int main() {
             // 三长一短，选最短
             for (int i = 0; i < 4; ++i) {
                 if (lengths[i] == minLength) {
-                    cout << char('A' + i) << '\n';
+                    cout << char('A' + i) << endl;
                     break;
                 }
             }
@@ -57,13 +59,13 @@ int main() {
             // 三短一长，选最长
             for (int i = 0; i < 4; ++i) {
                 if (lengths[i] == maxLength) {
-                    cout << char('A' + i) << '\n';
+                    cout << char('A' + i) << endl;
                     break;
                 }
             }
         } else {
             // 参差不齐，选 C
-            cout << 'C' << '\n';
+            cout << 'C' << endl;
         }
     }
     return 0;
