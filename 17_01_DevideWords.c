@@ -14,6 +14,22 @@ int main() {
     //str是存储字符串的数组, sizeof(str)是数组的大小, 防止缓冲区溢出
     fgets(str, sizeof(str), stdin);
 
+    // 读取输入并处理可能的超长情况
+    if (fgets(line, sizeof(line), stdin) == NULL) {
+        printf("输入读取失败\n");
+        return 1;
+    }
+    
+    // 移除输入末尾的换行符（如果存在）
+    size_t len = strlen(line);
+    if (len > 0 && line[len - 1] == '\n') {
+        line[len - 1] = '\0';
+    } else if (len == sizeof(line) - 1) {
+        // 提示用户输入可能被截断
+        printf("警告：输入可能过长，已截断处理\n");
+    }
+
+
     //strcspn函数用于计算字符串中从起始位置到第一个匹配字符之间的字符数。
     //它常用于查找字符串中不包含特定字符的连续部分。
     //将换行符替换为字符串结束符, 相当于去掉输入的换行符
