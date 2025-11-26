@@ -9,37 +9,33 @@ int main(){
     printf("请输入一段明文，根据key，加密后并输出其密文。\n");
     printf("当输入key值为10时，程序退出\n");
     int key = -1;
+    int i;
     char letters[10000];
     while(1){
         printf("请输入key值(整数【1，10】之间):\n");
-        
-        while (scanf(" %d", &key) != 1 || key < 1 || key > 10){
+
+        while (scanf(" %d", &key) != 1 || key < 1 || key > 10){//获得key并检查
             while (getchar() != '\n');
-            printf("输入的数值不对，【1，10】之间，key为10时，程序退出。\n"); 
+            printf("输入的数值不对，【1，10】之间，key为10时，程序退出。\n");
         }
         if (key == 10) break;
 
         printf("key值是：%d\n", key);
         printf("请输入明文字符串：\n");
-        while (getchar() != '\n');
+        while (getchar() != '\n');//清空缓存，防止干扰后面逻辑
 
         //从stdin获得一行字符，存入letters
         fgets(letters, sizeof(letters), stdin);
-        int i;
-        printf("明文字符串是：");
-        for (i = 0; i < strlen(letters); i++){//遍历输出字符
-            printf("%c", letters[i]);
-        }
-        printf("加密后的密文字符串是：");
-        for (i = 0; i < strlen(letters); i++){
+        printf("明文字符串是：%s", letters);//以字符串格式输出字符数组
+        for (i = 0; i < strlen(letters); i++){//strlen获得字符串中字符的个数，不包括结尾的\0
             if (('A' <= letters[i] && letters[i] <= 'Z')\
             || ('a' <= letters[i] && letters[i] <= 'z')) {//若是字母，则处理
-                letters[i] -= key;
+                letters[i] -= key;//将字符减少一个整数key值
             }
-            printf("%c", letters[i]);//输出处理过的字符
         }
+        printf("加密后的密文字符串是：%s", letters);
     }
     printf("key值是：10\n");
-    //system("pause");
+    system("pause");
     return 0;
 }
