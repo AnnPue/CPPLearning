@@ -36,6 +36,6 @@ int main(){
         printf("加密后的密文字符串是：%s", letters);
     }
     printf("key值是：10\n");
-    system("pause");
+    //system("pause");
     return 0;
 }
