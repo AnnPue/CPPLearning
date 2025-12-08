@@ -1,8 +1,10 @@
+/*
+本程序可以将输入的字串按字典序比较大小，并输出字典序最大的和最小的字符串。
+*/
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
 
-// 函数声明（抽离独立功能）
 void ClearIn();            // 清空输入流
 void PrintMenu();          // 打印操作菜单
 void InputStrings(char *str[]); // 输入三个字符串
@@ -25,7 +27,7 @@ int main(){
             printf("内存分配失败，程序退出!\n");
             return -1;
         }
-        memset(str[i], 0, 2000 * sizeof(char));// 清零
+        memset(str[i], 0, 2000 * sizeof(char));// 清零,防止垃圾值干扰
     }
 
     while (1){
@@ -55,7 +57,7 @@ int main(){
 // 清空输入流
 void ClearIn(){
     int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
+    while ((ch = getchar()) != '\n' && ch != EOF);// 清空输入流，防止输入缓冲区残留影响后续输入
 }
 
 // 打印操作菜单
