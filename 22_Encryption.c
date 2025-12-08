@@ -20,13 +20,13 @@ int main(){
         }
         if (key == 10) break;
 
-        printf("key值是：%d\n", key);
+        printf("key值是：%d\n", key);//回显key值
         printf("请输入明文字符串：\n");
         while (getchar() != '\n');//清空缓存，防止干扰后面逻辑
 
         //从stdin获得一行字符，存入letters
         fgets(letters, sizeof(letters), stdin);
-        printf("明文字符串是：%s", letters);//以字符串格式输出字符数组
+        printf("明文字符串是：%s", letters);//回显，以字符串格式输出字符数组
         for (i = 0; i < strlen(letters); i++){//strlen获得字符串中字符的个数，不包括结尾的\0
             if (('A' <= letters[i] && letters[i] <= 'Z')\
             || ('a' <= letters[i] && letters[i] <= 'z')) {//若是字母，则处理
