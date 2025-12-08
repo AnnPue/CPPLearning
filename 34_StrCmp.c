@@ -1,9 +1,12 @@
 /*
 本程序可以将输入的字串按字典序比较大小，并输出字典序最大的和最小的字符串。
+对字符串的输入和比较均通过菜单命令进行控制。
+对各种异常情况，如未输入直接比较、输入过长字符串等做了一些处理。
 */
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<stdbool.h>
 
 const int MAX_LEN = 2000;// 字符串最大长度
 const int STR_COUNT = 3;// 字符串个数
@@ -15,6 +18,7 @@ void InputStrings(char *str[]); // 输入三个字符串
 void CompareStrings(char *str[]);// 比较并输出最大/最小字符串
 void FreeMemory(char *str[]);   // 释放内存
 void Warn_NoInput();        // 提示未输入字符串
+bool Alloc(char *str[]);    // 分配字符串内存
 
 int main(){
     printf("=====================================\n");
@@ -24,18 +28,10 @@ int main(){
     char command[CMD_LEN];
     command[CMD_LEN - 1] = '\0'; // 确保字符串以null结尾
     char *str[STR_COUNT];
-    int flag = 0, i = STR_COUNT;
-
-    // 初始化字符串内存
-    while (i--){
-        str[i] = (char*)malloc(MAX_LEN * sizeof(char));// 分配足够内存，每个字符串最大长度1999
-        if (str[i] == NULL){
-            printf("内存分配失败，程序退出!\n");
-            return -1;
-        }
-        memset(str[i], 0, MAX_LEN * sizeof(char));// 清零,防止垃圾值干扰
+    int flag = 0;
+    if (!Alloc(str)) {
+        return -1; // 内存分配失败，退出程序
     }
-
     while (1){
         PrintMenu();
         scanf(" %7s", command);// 获取命令串，最多读取7个字符，防止缓冲区溢出
@@ -49,7 +45,7 @@ int main(){
             flag = 1;
         }
         else if (strcmp(command, "Exit") == 0){
-            FreeMemory(str);
+            FreeMemory(str);// 释放内存
             printf("感谢使用字符串综合比较应用!\n");
             return 0;
         }
@@ -62,8 +58,7 @@ int main(){
 
 // 清空输入流
 void ClearIn(){
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);// 清空输入流，防止输入缓冲区残留影响后续输入
+    while (getchar() != '\n');// 清空输入流，防止输入缓冲区残留影响后续输入
 }
 
 // 打印操作菜单
@@ -74,15 +69,18 @@ void PrintMenu(){
     printf("3.\"Exit\"--- 退出。\n");
 }
 
-// 输入三个字符串
+// 输入字符串
 void InputStrings(char *str[]){
     int i;
     for(i = 0; i < STR_COUNT; i++){
         printf("请输入字符串s%d：\n", i + 1);
-        fgets(str[i], MAX_LEN - 1, stdin);
-        //ClearIn();
-        str[i][MAX_LEN - 1] = '\0'; // 确保字符串以null结尾
-        printf("字符串s%d的长度是%d，内容是：%s\n", i + 1, strlen(str[i]) - 1, str[i]);
+        fgets(str[i], MAX_LEN, stdin);
+
+        char *newline = strchr(str[i], '\n');// 查找换行符，strchr返回指向换行符的指针
+        if (newline == NULL) ClearIn();// 输入超过最大长度，清空输入流
+
+        str[i][strcspn(str[i], "\n")] = '\0'; // 去除换行符
+        printf("字符串s%d的长度是%zu，内容是：%s\n", i + 1, strlen(str[i]), str[i]);
     }
 }
 
@@ -101,9 +99,29 @@ void CompareStrings(char *str[]){
 // 释放字符串内存
 void FreeMemory(char *str[]){
     int i = STR_COUNT;
-    while (i--) free(str[i]);
+    while (i--) {
+        free(str[i]);
+        str[i] = NULL;
+    }
 }
 
+// 提示未输入字符串
 void Warn_NoInput(){
     printf("请先通过菜单1，Input三个字符串的值。\n");
+}
+
+// 分配字符串内存
+bool Alloc(char *str[]){
+    int i = STR_COUNT;
+    // 初始化字符串内存
+    while (i--){
+        str[i] = (char*)malloc(MAX_LEN * sizeof(char));// 分配足够内存，每个字符串最大长度1999
+        if (str[i] == NULL){
+            printf("内存分配失败，程序退出!\n");
+            FreeMemory(str);
+            return false;
+        }
+        memset(str[i], 0, MAX_LEN * sizeof(char));// 清零,防止垃圾值干扰
+    }
+    return true;
 }
