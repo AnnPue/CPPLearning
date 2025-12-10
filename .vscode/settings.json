@@ -69,6 +69,9 @@
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
     // 编辑器字体（确保支持中文显示）
-    "editor.fontFamily": "LXGW WenKai Mono"
+    "editor.fontFamily": "LXGW WenKai Mono",
+
+    "doki.background.enabled": true,
+    "doki.wallpaper.enabled": true
     
 }
