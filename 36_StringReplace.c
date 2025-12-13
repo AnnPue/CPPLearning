@@ -47,7 +47,7 @@ int Find(const char* str, const char* sub, int *i){
 }
 
 // 释放字符串内存
-void FreeStr(char *str[]){
+void FreeStr(char **str){
     int i = STR_COUNT;
     while (i--) {
         free(str[i]);
@@ -57,7 +57,7 @@ void FreeStr(char *str[]){
 }
 
 // 分配字符串内存
-bool AllocStr(char *str[]){
+bool AllocStr(char **str){
     int i = STR_COUNT;
     while (i--){
         str[i] = (char*)malloc(MAX_LEN * sizeof(char)); // 分配足够内存，每个字符串最大长度1999
