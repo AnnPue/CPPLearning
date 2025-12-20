@@ -66,10 +66,10 @@ bool checkPermutation(vector<double> nums) {
 
 // 主函数：处理输入，生成所有唯一排列并检查
 int main() {
-    int n;
+    int n;  // 谜题数量
     cin >> n;
     while (n--) {
-        vector<int> raw(4);
+        vector<int> raw(4); // 输入的四个整数
         for (int i = 0; i < 4; i++) {
             cin >> raw[i];
         }
