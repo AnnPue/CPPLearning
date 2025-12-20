@@ -1,3 +1,7 @@
+/*
+读取输入字符串中字母（不区分大小写）的出现次数，并按次数从多到少输出
+*/
+// 使用快速排序。缺点：不稳定，不能保证计数相同的字母顺序
 #include <stdio.h>
 #include <ctype.h>  // for tolower
 #include <string.h>
@@ -20,13 +24,8 @@ int main(){
 
     char alphabet[ALPHABET_SIZE];
     int count[ALPHABET_SIZE];
+    char str[MAX_LEN];
     
-    char *str;
-    str = malloc(MAX_LEN * sizeof(char));
-    if (str == NULL){
-        fprintf(stderr, "错误：内存分配失败\n");
-        return 1;
-    }
     while(1){
         for (i = 0; i < ALPHABET_SIZE; i++){
             alphabet[i] = 'a' + i; // 初始化字母表
@@ -36,7 +35,6 @@ int main(){
         }
         fgets(str, MAX_LEN, stdin);
         if (strcmp(str, "END\n") == 0) {
-            free(str);
             system("pause");
             return 0; // 输入END时退出函数
         }
@@ -49,7 +47,6 @@ int main(){
         QuickSort(count, alphabet, 0, ALPHABET_SIZE - 1);
         PrintCounts(count, alphabet);
     }
-    free(str);
     return 0;
 }
 
