@@ -75,17 +75,19 @@ void Merge(int *count, char *alphabet, int left, int mid, int right) {
     char L_alpha[n1], R_alpha[n2];
 
     // 拷贝数据到临时数组
-    for (int i = 0; i < n1; i++) {
+    int i, j;
+    for (i = 0; i < n1; i++) {
         L_count[i] = count[left + i];
         L_alpha[i] = alphabet[left + i];
     }
-    for (int j = 0; j < n2; j++) {
+    for (j = 0; j < n2; j++) {
         R_count[j] = count[mid + 1 + j];
         R_alpha[j] = alphabet[mid + 1 + j];
     }
 
     // 合并临时数组到原数组（降序）
-    int i = 0, j = 0, k = left;
+    i = 0, j = 0;
+    int k = left;
     while (i < n1 && j < n2) {
         if (L_count[i] >= R_count[j]) {
             count[k] = L_count[i];
