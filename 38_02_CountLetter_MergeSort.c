@@ -24,7 +24,7 @@ int main(){
 
     char alphabet[ALPHABET_SIZE];   // 字母表
     int count[ALPHABET_SIZE];       // 对应出现次数
-    char str[MAX_LEN];             // 输入的字符串
+    char str[MAX_LEN];              // 输入的字符串
     while(1){
         for (i = 0; i < ALPHABET_SIZE; i++){
             alphabet[i] = 'a' + i; // 初始化字母表
@@ -67,50 +67,50 @@ void CountLetter(char *str, int *count){    // 统计字母出现次数
 
 // 归并函数：合并两个有序子数组
 void Merge(int *count, char *alphabet, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+    int n1 = mid - left + 1;    // 左子数组长度
+    int n2 = right - mid;       // 右子数组长度
 
-    // 临时数组存储左右子数组（计数+字母）
+    // 临时数组存储左右子数组
     int L_count[n1], R_count[n2];
-    char L_alpha[n1], R_alpha[n2];
+    char L_letter[n1], R_letter[n2];
 
     // 拷贝数据到临时数组
     int i, j;
     for (i = 0; i < n1; i++) {
         L_count[i] = count[left + i];
-        L_alpha[i] = alphabet[left + i];
+        L_letter[i] = alphabet[left + i];
     }
     for (j = 0; j < n2; j++) {
         R_count[j] = count[mid + 1 + j];
-        R_alpha[j] = alphabet[mid + 1 + j];
+        R_letter[j] = alphabet[mid + 1 + j];
     }
 
     // 合并临时数组到原数组（降序）
-    i = 0, j = 0;
-    int k = left;
+    i = j = 0;
+    int k = left;   // 原数组写入位置（从 left 开始）
     while (i < n1 && j < n2) {
         if (L_count[i] >= R_count[j]) {
             count[k] = L_count[i];
-            alphabet[k] = L_alpha[i];
+            alphabet[k] = L_letter[i];
             i++;
         } else {
             count[k] = R_count[j];
-            alphabet[k] = R_alpha[j];
+            alphabet[k] = R_letter[j];
             j++;
         }
         k++;
     }
 
-    // 拷贝剩余元素
+    // 拷贝剩余元素到原数组
     while (i < n1) {
         count[k] = L_count[i];
-        alphabet[k] = L_alpha[i];
+        alphabet[k] = L_letter[i];
         i++;
         k++;
     }
     while (j < n2) {
         count[k] = R_count[j];
-        alphabet[k] = R_alpha[j];
+        alphabet[k] = R_letter[j];
         j++;
         k++;
     }
