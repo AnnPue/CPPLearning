@@ -1,9 +1,11 @@
 /*
 读取一行字符串，统计串中每个字母出现的次数，
-大小写不区分，然后按照出现次数从大到小输出。
+大小写不区分，然后按照出现次数从大到小输出，相同次数按字母表顺序排列。
 输入END程序结束。
 */
-// 用结构体数组存储26个字母及其计数，然后按照出现次数从大到小输出。
+// 用结构体数组存储26个字母及其计数
+// 使用归并排序
+
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -56,11 +58,7 @@ int main(){
         CountLetter(str, letterArr);
         MergeSort(letterArr, 0, ALPHABET_SIZE - 1);
         PrintCounts(letterArr);
-
-        // 提示输入下一个字符串
-        printf("\n请输入下一个字符串，输入END程序结束。\n");
     }
-    return 0;
 }
 
 // 将字符串全部转换为小写
@@ -109,7 +107,7 @@ void Merge(LetterCount *letterArr, int left, int mid, int right) {
     // 降序合并临时数组到原结构体数组
     int i = 0, j = 0, k = left;
     while (i < n1 && j < n2) {
-        // 按count字段降序排序（核心：>= 实现降序）
+        // 按count字段降序排序
         if (L[i].count >= R[j].count) {
             letterArr[k] = L[i];
             i++;
