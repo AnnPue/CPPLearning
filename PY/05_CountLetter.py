@@ -16,6 +16,7 @@ def main():
         # 退出条件：不区分大小写判断
         if input_str == 'END':
             break
+        
         # 如果输入为空，则继续读取输入
         if not input_str:
             continue
