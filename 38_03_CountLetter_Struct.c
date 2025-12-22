@@ -92,20 +92,27 @@ void CountLetter(char *str, LetterCount *letterArr){
 void Merge(LetterCount *letterArr, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
+    int i, j;
 
     // 临时结构体数组：存储左右子数组
     LetterCount L[n1], R[n2];
 
     // 拷贝数据到临时结构体数组
-    for (int i = 0; i < n1; i++) {
+    for (i = 0; i < n1; i++) {
         L[i] = letterArr[left + i];
     }
-    for (int j = 0; j < n2; j++) {
+    for (j = 0; j < n2; j++) {
         R[j] = letterArr[mid + 1 + j];
     }
 
-    // 降序合并临时数组到原结构体数组
-    int i = 0, j = 0, k = left;
+    i = j = 0;
+
+    // k用于将合并后的结果写回原结构体数组letterArr的索引，指向当前待写入的位置
+    // 每次从L或R子数组选择一个元素放入letterArr[k]处
+    // 然后k自增，始终保证下一个写入位置是正确的。
+    int k = left;   // k初始化为left，代表原数组的合并起始位置
+
+    // 降序合并左右子数组
     while (i < n1 && j < n2) {
         // 按count字段降序排序
         if (L[i].count >= R[j].count) {
