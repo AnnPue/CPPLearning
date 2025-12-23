@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于74LS90和2ES102的1~12加法计数显示器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a6dcc 0%, #0d4d9c 100%);
+            color: white;
+            padding: 25px 30px;
+            border-bottom: 5px solid #0a3d7a;
+        }
+        
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 25px 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #1a6dcc;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .chip-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .chip {
+            background-color: #e6f2ff;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            width: 48%;
+            border: 2px solid #1a6dcc;
+        }
+        
+        .chip-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #0d4d9c;
+            margin-bottom: 8px;
+        }
+        
+        .chip-desc {
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .circuit-diagram {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            border: 2px dashed #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .display {
+            background-color: #222;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .seven-segment {
+            display: inline-block;
+            position: relative;
+            width: 120px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        
+        .segment {
+            position: absolute;
+            background-color: #333;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        
+        .segment.active {
+            background-color: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+        
+        .segment-a { top: 0; left: 20px; width: 80px; height: 15px; }
+        .segment-b { top: 20px; right: 0; width: 15px; height: 80px; }
+        .segment-c { bottom: 20px; right: 0; width: 15px; height: 80px; }
+        .segment-d { bottom: 0; left: 20px; width: 80px; height: 15px; }
+        .segment-e { bottom: 20px; left: 0; width: 15px; height: 80px; }
+        .segment-f { top: 20px; left: 0; width: 15px; height: 80px; }
+        .segment-g { top: 95px; left: 20px; width: 80px; height: 15px; }
+        
+        .current-number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #0d4d9c;
+            margin-top: 15px;
+        }
+        
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #1a6dcc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #0d4d9c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        button.reset {
+            background-color: #e74c3c;
+        }
+        
+        button.reset:hover {
+            background-color: #c0392b;
+        }
+        
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .truth-table th, .truth-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .truth-table th {
+            background-color: #1a6dcc;
+            color: white;
+        }
+        
+        .truth-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .pinout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .pin {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background-color: #f0f7ff;
+            border-radius: 4px;
+            border-left: 4px solid #1a6dcc;
+        }
+        
+        .pin-name {
+            font-weight: bold;
+            color: #0d4d9c;
+        }
+        
+        .pin-desc {
+            color: #555;
+        }
+        
+        .circuit-explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            border-left: 5px solid #1a6dcc;
+        }
+        
+        .counter-state {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .binary-digit {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid #ccc;
+        }
+        
+        .binary-digit.active {
+            background-color: #1a6dcc;
+            color: white;
+            border-color: #0d4d9c;
+        }
+        
+        .binary-label {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>基于74LS90和2ES102的1~12加法计数显示器</h1>
+            <div class="subtitle">使用74LS90十进制计数器与2ES102七段显示译码器实现的12进制计数显示电路</div>
+        </header>
+        
+        <div class="content">
+            <div class="left-column">
+                <div class="section">
+                    <h2 class="section-title">芯片简介</h2>
+                    <div class="chip-container">
+                        <div class="chip">
+                            <div class="chip-name">74LS90</div>
+                            <div class="chip-desc">异步十进制计数器芯片，包含四个主从触发器和附加门，可配置为多种计数模式。</div>
+                        </div>
+                        <div class="chip">
+                            <div class="chip-name">2ES102</div>
+                            <div class="chip-desc">七段显示译码器芯片，将BCD码转换为七段数码管显示信号，带消隐和灯测试功能。</div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="section-title">电路原理图</h2>
+                    <div class="circuit-diagram">
+                        <div style="margin-bottom: 15px; color: #555;">
+                            74LS90配置为12进制计数器，输出BCD码到2ES102驱动数码管
+                        </div>
+                        <div style="font-family: monospace; background-color: #f5f5f5; padding: 15px; border-radius: 5px; text-align: left; max-width: 500px; margin: 0 auto;">
+                            74LS90 连接方式：<br>
+                            - CP1(14脚)接时钟脉冲<br>
+                            - R0(1)和R0(2)接地<br>
+                            - R9(1)和R9(2)接地<br>
+                            - QA(12)接CP2(1脚)<br>
+                            - 输出QA、QB、QC、QD接2ES102的A、B、C、D<br><br>
+                            2ES102 连接方式：<br>
+                            - A、B、C、D接74LS90输出<br>
+                            - LT(3脚)、BI/RBO(4脚)接高电平<br>
+                            - RBI(5脚)悬空或接高电平<br>
+                            - 输出a-g接七段数码管
+                        </div>
+                    </div>
+                    
+                    <h2 class="section-title">74LS90引脚说明</h2>
+                    <div class="pinout">
+                        <div class="pin">
+                            <span class="pin-name">CP1 (14)</span>
+                            <span class="pin-desc">时钟输入1</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">CP2 (1)</span>
+                            <span class="pin-desc">时钟输入2</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">R0(1) (2)</span>
+                            <span class="pin-desc">复位输入1</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">R0(2) (3)</span>
+                            <span class="pin-desc">复位输入2</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">R9(1) (6)</span>
+                            <span class="pin-desc">置9输入1</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">R9(2) (7)</span>
+                            <span class="pin-desc">置9输入2</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">QA (12)</span>
+                            <span class="pin-desc">输出A (LSB)</span>
+                        </div>
+                        <div class="pin">
+                            <span class="pin-name">QD (11)</span>
+                            <span class="pin-desc">输出D (MSB)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="section">
+                    <h2 class="section-title">数字显示</h2>
+                    <div class="display">
+                        <div class="seven-segment">
+                            <div class="segment segment-a" id="seg-a"></div>
+                            <div class="segment segment-b" id="seg-b"></div>
+                            <div class="segment segment-c" id="seg-c"></div>
+                            <div class="segment segment-d" id="seg-d"></div>
+                            <div class="segment segment-e" id="seg-e"></div>
+                            <div class="segment segment-f" id="seg-f"></div>
+                            <div class="segment segment-g" id="seg-g"></div>
+                        </div>
+                        <div class="current-number" id="current-number">1</div>
+                    </div>
+                    
+                    <h2 class="section-title">74LS90当前状态</h2>
+                    <div class="counter-state">
+                        <div>
+                            <div class="binary-digit" id="bit-3">0</div>
+                            <div class="binary-label">QD (MSB)</div>
+                        </div>
+                        <div>
+                            <div class="binary-digit" id="bit-2">0</div>
+                            <div class="binary-label">QC</div>
+                        </div>
+                        <div>
+                            <div class="binary-digit" id="bit-1">0</div>
+                            <div class="binary-label">QB</div>
+                        </div>
+                        <div>
+                            <div class="binary-digit" id="bit-0">1</div>
+                            <div class="binary-label">QA (LSB)</div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="section-title">控制面板</h2>
+                    <div class="control-panel">
+                        <button id="count-btn">
+                            <i class="fas fa-plus"></i> 计数增加
+                        </button>
+                        <button id="reset-btn" class="reset">
+                            <i class="fas fa-redo"></i> 复位到1
+                        </button>
+                        <button id="auto-btn">
+                            <i class="fas fa-play"></i> 自动计数
+                        </button>
+                    </div>
+                    
+                    <h2 class="section-title">2ES102真值表 (部分)</h2>
+                    <table class="truth-table">
+                        <thead>
+                            <tr>
+                                <th>BCD输入</th>
+                                <th>显示数字</th>
+                                <th>74LS90输出</th>
+                            </tr>
+                        </thead>
+                        <tbody id="truth-table-body">
+                            <!-- 表格内容由JavaScript动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="circuit-explanation">
+                    <h3>电路工作原理说明：</h3>
+                    <p>1. 74LS90配置为12进制计数器：将QA输出连接到CP2输入端，形成8421BCD码计数模式。</p>
+                    <p>2. 当计数器达到12(二进制1100)时，通过门电路产生复位信号，使计数器复位到1。</p>
+                    <p>3. 74LS90的输出QA、QB、QC、QD作为BCD码输入到2ES102的A、B、C、D输入端。</p>
+                    <p>4. 2ES102将BCD码转换为七段数码管驱动信号，显示对应的数字。</p>
+                    <p>5. 本电路实现了1~12的循环计数显示，跳过0直接从1开始计数。</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>电子技术课程设计 - 基于74LS90和2ES102的1~12加法计数显示器</p>
+            <p>说明：此演示为电路原理的模拟展示，实际电路需考虑电源、电阻、时钟信号等完整连接。</p>
+        </footer>
+    </div>
+
+    <script>
+        // 七段数码管各段对应的字母
+        const segmentMap = {
+            'a': document.getElementById('seg-a'),
+            'b': document.getElementById('seg-b'),
+            'c': document.getElementById('seg-c'),
+            'd': document.getElementById('seg-d'),
+            'e': document.getElementById('seg-e'),
+            'f': document.getElementById('seg-f'),
+            'g': document.getElementById('seg-g')
+        };
+        
+        // 数字0-9和1-12对应的七段显示编码（标准七段数码管）
+        // 格式：a,b,c,d,e,f,g (1表示亮，0表示灭)
+        const sevenSegmentEncoding = {
+            0: [1,1,1,1,1,1,0],
+            1: [0,1,1,0,0,0,0],
+            2: [1,1,0,1,1,0,1],
+            3: [1,1,1,1,0,0,1],
+            4: [0,1,1,0,0,1,1],
+            5: [1,0,1,1,0,1,1],
+            6: [1,0,1,1,1,1,1],
+            7: [1,1,1,0,0,0,0],
+            8: [1,1,1,1,1,1,1],
+            9: [1,1,1,1,0,1,1],
+            10: [1,1,1,0,1,1,1], // 自定义显示A (10)
+            11: [0,0,1,1,1,1,1], // 自定义显示b (11)
+            12: [1,0,0,1,1,1,0]  // 自定义显示C (12)
+        };
+        
+        // 二进制位元素
+        const bitElements = [
+            document.getElementById('bit-0'),
+            document.getElementById('bit-1'),
+            document.getElementById('bit-2'),
+            document.getElementById('bit-3')
+        ];
+        
+        // 当前计数值 (1-12)
+        let currentCount = 1;
+        let autoInterval = null;
+        
+        // 更新显示
+        function updateDisplay() {
+            // 更新数字显示
+            document.getElementById('current-number').textContent = currentCount;
+            
+            // 更新七段数码管
+            const encoding = sevenSegmentEncoding[currentCount];
+            const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+            
+            segments.forEach((segment, index) => {
+                if (encoding[index] === 1) {
+                    segmentMap[segment].classList.add('active');
+                } else {
+                    segmentMap[segment].classList.remove('active');
+                }
+            });
+            
+            // 更新二进制状态显示
+            // 74LS90输出为BCD码，对于1-12需要特殊处理
+            let binaryValue;
+            if (currentCount >= 1 && currentCount <= 9) {
+                // 1-9直接使用BCD码
+                binaryValue = currentCount;
+            } else {
+                // 10-12使用自定义二进制表示
+                // 实际电路中，10=1010, 11=1011, 12=1100
+                // 但由于74LS90是十进制计数器，需要特殊复位电路
+                switch(currentCount) {
+                    case 10: binaryValue = 10; break; // 1010
+                    case 11: binaryValue = 11; break; // 1011
+                    case 12: binaryValue = 12; break; // 1100
+                    default: binaryValue = 1;
+                }
+            }
+            
+            // 转换为二进制并更新显示
+            const binaryString = binaryValue.toString(2).padStart(4, '0');
+            for (let i = 0; i < 4; i++) {
+                bitElements[i].textContent = binaryString[3-i];
+                if (binaryString[3-i] === '1') {
+                    bitElements[i].classList.add('active');
+                } else {
+                    bitElements[i].classList.remove('active');
+                }
+            }
+        }
+        
+        // 增加计数
+        function incrementCount() {
+            currentCount++;
+            if (currentCount > 12) {
+                currentCount = 1;
+            }
+            updateDisplay();
+        }
+        
+        // 复位计数
+        function resetCount() {
+            currentCount = 1;
+            updateDisplay();
+        }
+        
+        // 自动计数
+        function toggleAutoCount() {
+            const autoBtn = document.getElementById('auto-btn');
+            
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
+                autoBtn.innerHTML = '<i class="fas fa-play"></i> 自动计数';
+                document.getElementById('count-btn').disabled = false;
+            } else {
+                autoInterval = setInterval(incrementCount, 1000);
+                autoBtn.innerHTML = '<i class="fas fa-pause"></i> 停止自动';
+                document.getElementById('count-btn').disabled = true;
+            }
+        }
+        
+        // 生成真值表
+        function generateTruthTable() {
+            const tableBody = document.getElementById('truth-table-body');
+            tableBody.innerHTML = '';
+            
+            for (let i = 1; i <= 12; i++) {
+                const row = document.createElement('tr');
+                
+                // 计算BCD码
+                let bcdCode;
+                if (i <= 9) {
+                    bcdCode = i.toString(2).padStart(4, '0');
+                } else {
+                    // 对于10-12，实际电路中需要特殊处理
+                    switch(i) {
+                        case 10: bcdCode = "1010"; break;
+                        case 11: bcdCode = "1011"; break;
+                        case 12: bcdCode = "1100"; break;
+                        default: bcdCode = "0001";
+                    }
+                }
+                
+                // 创建表格单元格
+                const bcdCell = document.createElement('td');
+                bcdCell.textContent = bcdCode;
+                
+                const numCell = document.createElement('td');
+                numCell.textContent = i;
+                
+                const outputCell = document.createElement('td');
+                outputCell.textContent = `QD=${bcdCode[0]}, QC=${bcdCode[1]}, QB=${bcdCode[2]}, QA=${bcdCode[3]}`;
+                
+                // 高亮当前行
+                if (i === currentCount) {
+                    row.style.backgroundColor = '#e6f2ff';
+                }
+                
+                row.appendChild(bcdCell);
+                row.appendChild(numCell);
+                row.appendChild(outputCell);
+                tableBody.appendChild(row);
+            }
+        }
+        
+        // 初始化
+        function init() {
+            // 绑定按钮事件
+            document.getElementById('count-btn').addEventListener('click', incrementCount);
+            document.getElementById('reset-btn').addEventListener('click', resetCount);
+            document.getElementById('auto-btn').addEventListener('click', toggleAutoCount);
+            
+            // 初始显示
+            updateDisplay();
+            generateTruthTable();
+            
+            // 每秒更新真值表高亮
+            setInterval(generateTruthTable, 100);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
