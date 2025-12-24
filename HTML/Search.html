@@ -2,15 +2,36 @@
 
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <style>
+            #bili {
+                text-decoration: none;
+                color: rgb(252, 164, 244);
+            }
+            #bili:hover {
+                text-decoration: underline;
+                color: rgb(255, 105, 180);
+            }
+            main {
+                margin-top: 20px;
+                font-size: 20pt;
+            }
+            body {
+                background-color: aliceblue;
+            }
+        </style>
         <title>Search</title>
     </head>
     <body>
-        <form action="https://search.bilibili.com/all" method="get">
+        <form action="https://search.bilibili.com/all" method="get" target="_blank">
             <h1>
-                Search Bilibili
+                Search in Bilibili
             </h1> 
-            <input autofocus autocomplete = "off" name = "keyword" type="search" placeholder="You Know">
+            <input autofocus autocomplete = "off" name = "keyword" type="search" placeholder="Text me">
             <input type = "submit" value="Search Now">
         </form>
+        <main rel="noopener noreferrer">
+            Visit <a href="https://www.bilibili.com/" id="bili" target="_blank">Bilibili</a> or go back to <a href="Home.html" target="_blank">Home Page</a>.
+        </main>
     </body>
 </html>
