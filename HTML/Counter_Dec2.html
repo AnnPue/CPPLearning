@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双2ES102具体引脚连接方法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f5ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(26, 35, 126, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 1100px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #283593;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+            font-weight: 600;
+        }
+        
+        .chip-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .chip-box {
+            background-color: #f5f7ff;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 5px solid #3f51b5;
+        }
+        
+        .chip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .chip-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        
+        .chip-id {
+            background-color: #3f51b5;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .pin-connection-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .pin-connection-table th {
+            background-color: #3f51b5;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .pin-connection-table td {
+            border: 1px solid #ddd;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        
+        .pin-connection-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .pin-connection-table tr:hover {
+            background-color: #e8eaf6;
+        }
+        
+        .pin-number {
+            font-weight: bold;
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            min-width: 30px;
+        }
+        
+        .pin-name {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .connection-type {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .connection-power {
+            background-color: #ffecb3;
+            color: #ff8f00;
+        }
+        
+        .connection-ground {
+            background-color: #e0e0e0;
+            color: #616161;
+        }
+        
+        .connection-input {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .connection-output {
+            background-color: #bbdefb;
+            color: #1565c0;
+        }
+        
+        .connection-clock {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .connection-control {
+            background-color: #ffccbc;
+            color: #d84315;
+        }
+        
+        .connection-reset {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .connection-display {
+            background-color: #e1bee7;
+            color: #7b1fa2;
+        }
+        
+        .circuit-diagram-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px dashed #bdbdbd;
+        }
+        
+        .diagram-title {
+            text-align: center;
+            font-weight: bold;
+            color: #424242;
+            margin-bottom: 15px;
+        }
+        
+        .circuit-schematic {
+            font-family: monospace;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        
+        .connection-note {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #e3f2fd;
+            border-radius: 6px;
+            border-left: 4px solid #2196f3;
+            font-size: 0.95rem;
+        }
+        
+        .logic-circuit {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .logic-gate {
+            display: inline-block;
+            background-color: #f5f5f5;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #bdbdbd;
+            font-family: monospace;
+        }
+        
+        .full-circuit-section {
+            grid-column: 1 / -1;
+        }
+        
+        .display-section {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            color: white;
+        }
+        
+        .display-title {
+            color: #bb86fc;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .digit-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+        
+        .digit-box {
+            text-align: center;
+        }
+        
+        .digit-label {
+            color: #bb86fc;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .digit-value {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00e5ff;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+        
+        .segment-diagram {
+            position: relative;
+            width: 100px;
+            height: 170px;
+            margin: 0 auto;
+        }
+        
+        .segment {
+            position: absolute;
+            background-color: #333;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        
+        .segment.active {
+            background-color: #00e676;
+            box-shadow: 0 0 10px #00e676;
+        }
+        
+        .seg-a { top: 0; left: 15px; width: 70px; height: 12px; }
+        .seg-b { top: 15px; right: 0; width: 12px; height: 70px; }
+        .seg-c { bottom: 15px; right: 0; width: 12px; height: 70px; }
+        .seg-d { bottom: 0; left: 15px; width: 70px; height: 12px; }
+        .seg-e { bottom: 15px; left: 0; width: 12px; height: 70px; }
+        .seg-f { top: 15px; left: 0; width: 12px; height: 70px; }
+        .seg-g { top: 85px; left: 15px; width: 70px; height: 12px; }
+        
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #3f51b5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background-color: #303f9f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        button.reset {
+            background-color: #f44336;
+        }
+        
+        button.reset:hover {
+            background-color: #d32f2f;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .wire-color {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        
+        .color-red { background-color: #f44336; }
+        .color-blue { background-color: #2196f3; }
+        .color-green { background-color: #4caf50; }
+        .color-yellow { background-color: #ffeb3b; }
+        .color-purple { background-color: #9c27b0; }
+        .color-orange { background-color: #ff9800; }
+        
+        .color-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        
+        .color-item {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+        
+        .important-note {
+            background-color: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .note-title {
+            color: #e65100;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>双2ES102 1~12加法计数显示器具体引脚连接方法</h1>
+        <div class="subtitle">详细说明74LS90计数器与两个2ES102译码器的每个引脚连接方式</div>
+    </div>
+    
+    <div class="content-grid">
+        <div class="section">
+            <h2 class="section-title">1. 74LS90计数器芯片引脚连接</h2>
+            <div class="chip-box">
+                <div class="chip-header">
+                    <div class="chip-name">74LS90 - 异步十进制计数器</div>
+                    <div class="chip-id">IC1</div>
+                </div>
+                
+                <table class="pin-connection-table">
+                    <thead>
+                        <tr>
+                            <th>引脚号</th>
+                            <th>引脚名称</th>
+                            <th>连接说明</th>
+                            <th>连接类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="pin-number">1</span></td>
+                            <td><span class="pin-name">CP2</span> (时钟输入2)</td>
+                            <td>连接到QA输出(12脚)，形成8421码计数模式</td>
+                            <td><span class="connection-type connection-control">内部连接</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">2</span></td>
+                            <td><span class="pin-name">R0(1)</span> (复位输入1)</td>
+                            <td>与3脚一起通过逻辑门电路控制复位，正常计数时接地</td>
+                            <td><span class="connection-type connection-reset">复位控制</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">3</span></td>
+                            <td><span class="pin-name">R0(2)</span> (复位输入2)</td>
+                            <td>与2脚一起通过逻辑门电路控制复位，正常计数时接地</td>
+                            <td><span class="connection-type connection-reset">复位控制</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">4</span></td>
+                            <td><span class="pin-name">NC</span> (空脚)</td>
+                            <td>不连接或接地</td>
+                            <td><span class="connection-type connection-ground">空脚处理</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">5</span></td>
+                            <td><span class="pin-name">VCC</span> (电源)</td>
+                            <td>连接到+5V电源</td>
+                            <td><span class="connection-type connection-power">电源</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">6</span></td>
+                            <td><span class="pin-name">R9(1)</span> (置9输入1)</td>
+                            <td>接地（不置9）</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">7</span></td>
+                            <td><span class="pin-name">R9(2)</span> (置9输入2)</td>
+                            <td>接地（不置9）</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">8</span></td>
+                            <td><span class="pin-name">QD</span> (输出D - MSB)</td>
+                            <td>连接到个位2ES102的D输入(6脚)和逻辑电路</td>
+                            <td><span class="connection-type connection-output">数据输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">9</span></td>
+                            <td><span class="pin-name">QC</span> (输出C)</td>
+                            <td>连接到个位2ES102的C输入(2脚)</td>
+                            <td><span class="connection-type connection-output">数据输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">10</span></td>
+                            <td><span class="pin-name">GND</span> (地)</td>
+                            <td>连接到电源地</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">11</span></td>
+                            <td><span class="pin-name">QB</span> (输出B)</td>
+                            <td>连接到个位2ES102的B输入(1脚)</td>
+                            <td><span class="connection-type connection-output">数据输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">12</span></td>
+                            <td><span class="pin-name">QA</span> (输出A - LSB)</td>
+                            <td>连接到个位2ES102的A输入(7脚)和CP2(1脚)</td>
+                            <td><span class="connection-type connection-output">数据输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">13</span></td>
+                            <td><span class="pin-name">NC</span> (空脚)</td>
+                            <td>不连接或接地</td>
+                            <td><span class="connection-type connection-ground">空脚处理</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">14</span></td>
+                            <td><span class="pin-name">CP1</span> (时钟输入1)</td>
+                            <td>连接到时钟信号源（555定时器或手动按钮）</td>
+                            <td><span class="connection-type connection-clock">时钟输入</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="connection-note">
+                    <strong>74LS90配置说明：</strong> QA(12脚)连接到CP2(1脚)使芯片工作在8421BCD码计数模式。R0(1)和R0(2)通过逻辑门控制，当计数到13(1101)时产生复位信号。
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">2. 十位数2ES102引脚连接 (IC2)</h2>
+            <div class="chip-box">
+                <div class="chip-header">
+                    <div class="chip-name">2ES102 - 十位数译码器</div>
+                    <div class="chip-id">IC2</div>
+                </div>
+                
+                <table class="pin-connection-table">
+                    <thead>
+                        <tr>
+                            <th>引脚号</th>
+                            <th>引脚名称</th>
+                            <th>连接说明</th>
+                            <th>连接类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="pin-number">1</span></td>
+                            <td><span class="pin-name">B</span> (BCD输入B)</td>
+                            <td>始终接地（输入为"0001"时B=0）</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">2</span></td>
+                            <td><span class="pin-name">C</span> (BCD输入C)</td>
+                            <td>始终接地（输入为"0001"时C=0）</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">3</span></td>
+                            <td><span class="pin-name">LT</span> (灯测试)</td>
+                            <td>连接到+5V（正常显示模式）</td>
+                            <td><span class="connection-type connection-power">电源</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">4</span></td>
+                            <td><span class="pin-name">BI/RBO</span> (消隐)</td>
+                            <td>通过330Ω电阻连接到+5V，同时连接到逻辑电路</td>
+                            <td><span class="connection-type connection-control">控制信号</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">5</span></td>
+                            <td><span class="pin-name">RBI</span> (纹波消隐)</td>
+                            <td>连接到逻辑电路，控制前导零消隐</td>
+                            <td><span class="connection-type connection-control">控制信号</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">6</span></td>
+                            <td><span class="pin-name">D</span> (BCD输入D - MSB)</td>
+                            <td>始终接地（输入为"0001"时D=0）</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">7</span></td>
+                            <td><span class="pin-name">A</span> (BCD输入A - LSB)</td>
+                            <td>连接到逻辑电路（计数≥10时为1）</td>
+                            <td><span class="connection-type connection-input">数据输入</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">8</span></td>
+                            <td><span class="pin-name">GND</span> (地)</td>
+                            <td>连接到电源地</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">9</span></td>
+                            <td><span class="pin-name">e</span> (段输出e)</td>
+                            <td>通过330Ω电阻连接到十位数码管e段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">10</span></td>
+                            <td><span class="pin-name">d</span> (段输出d)</td>
+                            <td>通过330Ω电阻连接到十位数码管d段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">11</span></td>
+                            <td><span class="pin-name">c</span> (段输出c)</td>
+                            <td>通过330Ω电阻连接到十位数码管c段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">12</span></td>
+                            <td><span class="pin-name">b</span> (段输出b)</td>
+                            <td>通过330Ω电阻连接到十位数码管b段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">13</span></td>
+                            <td><span class="pin-name">a</span> (段输出a)</td>
+                            <td>通过330Ω电阻连接到十位数码管a段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">14</span></td>
+                            <td><span class="pin-name">g</span> (段输出g)</td>
+                            <td>通过330Ω电阻连接到十位数码管g段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">15</span></td>
+                            <td><span class="pin-name">f</span> (段输出f)</td>
+                            <td>通过330Ω电阻连接到十位数码管f段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">16</span></td>
+                            <td><span class="pin-name">VCC</span> (电源)</td>
+                            <td>连接到+5V电源</td>
+                            <td><span class="connection-type connection-power">电源</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="connection-note">
+                    <strong>十位2ES102功能：</strong> 当计数值≥10时，A输入为1，显示数字"1"；当计数值<10时，A输入为0，通过BI/RBO控制数码管消隐。B、C、D输入始终接地。
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">3. 个位数2ES102引脚连接 (IC3)</h2>
+            <div class="chip-box">
+                <div class="chip-header">
+                    <div class="chip-name">2ES102 - 个位数译码器</div>
+                    <div class="chip-id">IC3</div>
+                </div>
+                
+                <table class="pin-connection-table">
+                    <thead>
+                        <tr>
+                            <th>引脚号</th>
+                            <th>引脚名称</th>
+                            <th>连接说明</th>
+                            <th>连接类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="pin-number">1</span></td>
+                            <td><span class="pin-name">B</span> (BCD输入B)</td>
+                            <td>连接到74LS90的QB输出(11脚)</td>
+                            <td><span class="connection-type connection-input">数据输入</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">2</span></td>
+                            <td><span class="pin-name">C</span> (BCD输入C)</td>
+                            <td>连接到74LS90的QC输出(9脚)</td>
+                            <td><span class="connection-type connection-input">数据输入</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">3</span></td>
+                            <td><span class="pin-name">LT</span> (灯测试)</td>
+                            <td>连接到+5V（正常显示模式）</td>
+                            <td><span class="connection-type connection-power">电源</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">4</span></td>
+                            <td><span class="pin-name">BI/RBO</span> (消隐)</td>
+                            <td>连接到+5V（正常显示）</td>
+                            <td><span class="connection-type connection-power">电源</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">5</span></td>
+                            <td><span class="pin-name">RBI</span> (纹波消隐)</td>
+                            <td>连接到十位2ES102的RBO(4脚)</td>
+                            <td><span class="connection-type connection-control">控制信号</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">6</span></td>
+                            <td><span class="pin-name">D</span> (BCD输入D - MSB)</td>
+                            <td>连接到74LS90的QD输出(8脚)</td>
+                            <td><span class="connection-type connection-input">数据输入</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">7</span></td>
+                            <td><span class="pin-name">A</span> (BCD输入A - LSB)</td>
+                            <td>连接到74LS90的QA输出(12脚)</td>
+                            <td><span class="connection-type connection-input">数据输入</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">8</span></td>
+                            <td><span class="pin-name">GND</span> (地)</td>
+                            <td>连接到电源地</td>
+                            <td><span class="connection-type connection-ground">接地</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">9</span></td>
+                            <td><span class="pin-name">e</span> (段输出e)</td>
+                            <td>通过330Ω电阻连接到个位数码管e段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">10</span></td>
+                            <td><span class="pin-name">d</span> (段输出d)</td>
+                            <td>通过330Ω电阻连接到个位数码管d段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">11</span></td>
+                            <td><span class="pin-name">c</span> (段输出c)</td>
+                            <td>通过330Ω电阻连接到个位数码管c段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">12</span></td>
+                            <td><span class="pin-name">b</span> (段输出b)</td>
+                            <td>通过330Ω电阻连接到个位数码管b段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">13</span></td>
+                            <td><span class="pin-name">a</span> (段输出a)</td>
+                            <td>通过330Ω电阻连接到个位数码管a段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">14</span></td>
+                            <td><span class="pin-name">g</span> (段输出g)</td>
+                            <td>通过330Ω电阻连接到个位数码管g段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">15</span></td>
+                            <td><span class="pin-name">f</span> (段输出f)</td>
+                            <td>通过330Ω电阻连接到个位数码管f段</td>
+                            <td><span class="connection-type connection-display">显示输出</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="pin-number">16</span></td>
+                            <td><span class="pin-name">VCC</span> (电源)</td>
+                            <td>连接到+5V电源</td>
+                            <td><span class="connection-type connection-power">电源</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="connection-note">
+                    <strong>个位2ES102功能：</strong> 直接接收74LS90的BCD码输出，显示0-9。RBI连接到十位2ES102的RBO，实现前导零消隐功能。
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">4. 逻辑控制电路连接</h2>
+            <div class="chip-box">
+                <div class="chip-header">
+                    <div class="chip-name">逻辑控制电路</div>
+                    <div class="chip-id">门电路部分</div>
+                </div>
+                
+                <div class="logic-circuit">
+                    <h3>复位逻辑电路 (使用74LS08与门和74LS04非门):</h3>
+                    <p>1. 检测计数值13(1101)：当QD=1, QC=1, QB=0, QA=1时复位</p>
+                    <p>2. 复位逻辑：复位信号 = QD · QC · QB' · QA</p>
+                    <p>3. 连接到74LS90的R0(1)和R0(2)，当复位信号=1时清零计数器</p>
+                    
+                    <h3>十位使能逻辑电路：</h3>
+                    <p>1. 检测计数值≥10：当计数值为10(1010), 11(1011), 12(1100)时</p>
+                    <p>2. 十位使能逻辑：十位A输入 = (QD·QB') + (QD·QC)</p>
+                    <p>3. 简化后：十位A输入 = QD·(QB' + QC)</p>
+                    
+                    <h3>消隐控制逻辑：</h3>
+                    <p>1. 十位2ES102的BI/RBO：当十位A输入=0时，控制消隐</p>
+                    <p>2. 十位2ES102的RBI：接地（始终允许消隐）</p>
+                    <p>3. 个位2ES102的RBI：连接到十位2ES102的RBO，实现级联消隐</p>
+                </div>
+                
+                <div class="connection-note">
+                    <strong>逻辑电路实现：</strong> 使用74LS08（四2输入与门）和74LS04（六反相器）实现上述逻辑功能。所有逻辑门芯片需要连接+5V电源和地。
+                </div>
+            </div>
+        </div>
+        
+        <div class="section full-circuit-section">
+            <h2 class="section-title">5. 完整电路原理图</h2>
+            <div class="circuit-diagram-container">
+                <div class="diagram-title">双2ES102 1~12加法计数显示器完整连接图</div>
+                <div class="circuit-schematic">
+                    <pre>
++5V ──┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+      │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+     [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
+      │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+     IC1 IC1 IC2 IC2 IC2 IC2 IC2 IC3 IC3 IC3 IC3 IC3 IC3 IC3 IC3 IC2 IC3
+     74LS90   2ES102(十位)           2ES102(个位)           (电源)
+     
+     GND ──┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┘
+           │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+          [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
+           │   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+          IC1 IC1 IC2 IC2 IC2 IC2 IC2 IC3 IC3 IC3 IC3 IC3 IC3 IC3 IC3
+          74LS90   2ES102(十位)           2ES102(个位)
+     
+     关键连接线：
+     时钟信号 → 74LS90引脚14(CP1)
+     74LS90引脚12(QA) → 引脚1(CP2) [内部反馈]
+     74LS90引脚12(QA) → 个位2ES102引脚7(A)
+     74LS90引脚11(QB) → 个位2ES102引脚1(B)
+     74LS90引脚9(QC) → 个位2ES102引脚2(C)
+     74LS90引脚8(QD) → 个位2ES102引脚6(D)
+     
+     74LS90引脚8(QD) → 逻辑电路 → 十位2ES102引脚7(A)
+     逻辑电路 → 74LS90引脚2,3(R0) [复位控制]
+     
+     十位2ES102引脚4(BI/RBO) → 个位2ES102引脚5(RBI) [消隐级联]
+     
+     数码管连接：
+     每个2ES102的a-g输出(引脚13-15,9-11) → 330Ω电阻 → 对应数码管段
+     数码管公共端：共阴极接地，共阳极接+5V
+                </pre>
+                </div>
+                
+                <div class="color-legend">
+                    <div class="color-item"><span class="wire-color color-red"></span>电源线 (+5V)</div>
+                    <div class="color-item"><span class="wire-color color-blue"></span>地线 (GND)</div>
+                    <div class="color-item"><span class="wire-color color-green"></span>时钟信号线</div>
+                    <div class="color-item"><span class="wire-color color-yellow"></span>数据线 (QA-QD)</div>
+                    <div class="color-item"><span class="wire-color color-purple"></span>控制信号线</div>
+                    <div class="color-item"><span class="wire-color color-orange"></span>显示输出线</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="display-section">
+            <h2 class="display-title">实时计数显示演示</h2>
+            
+            <div class="digit-display">
+                <div class="digit-box">
+                    <div class="digit-label">十位显示</div>
+                    <div class="segment-diagram" id="tens-display">
+                        <div class="segment seg-a" id="tens-a"></div>
+                        <div class="segment seg-b" id="tens-b"></div>
+                        <div class="segment seg-c" id="tens-c"></div>
+                        <div class="segment seg-d" id="tens-d"></div>
+                        <div class="segment seg-e" id="tens-e"></div>
+                        <div class="segment seg-f" id="tens-f"></div>
+                        <div class="segment seg-g" id="tens-g"></div>
+                    </div>
+                </div>
+                
+                <div class="digit-box">
+                    <div class="digit-label">个位显示</div>
+                    <div class="segment-diagram" id="units-display">
+                        <div class="segment seg-a" id="units-a"></div>
+                        <div class="segment seg-b" id="units-b"></div>
+                        <div class="segment seg-c" id="units-c"></div>
+                        <div class="segment seg-d" id="units-d"></div>
+                        <div class="segment seg-e" id="units-e"></div>
+                        <div class="segment seg-f" id="units-f"></div>
+                        <div class="segment seg-g" id="units-g"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <div style="font-size: 1.5rem; color: #bb86fc; margin-bottom: 10px;">当前计数值: <span id="current-count">01</span></div>
+                <div style="font-size: 1rem; color: #cfd8dc;">74LS90输出: <span id="current-bcd-display">0001</span> (QD QC QB QA)</div>
+            </div>
+            
+            <div class="control-panel">
+                <button id="manual-clock">
+                    <i class="fas fa-hand-point-up"></i> 手动时钟脉冲
+                </button>
+                <button id="reset-btn" class="reset">
+                    <i class="fas fa-redo"></i> 复位到01
+                </button>
+                <button id="auto-clock">
+                    <i class="fas fa-play"></i> 自动计数
+                </button>
+            </div>
+        </div>
+        
+        <div class="important-note">
+            <div class="note-title">重要注意事项：</div>
+            <p>1. 所有芯片必须正确连接+5V电源和地线，电源电压不能超过5.5V</p>
+            <p>2. 74LS90的时钟输入需要稳定，上升沿触发计数</p>
+            <p>3. 每个2ES102输出到数码管必须串联限流电阻(通常220-470Ω)</p>
+            <p>4. 逻辑门电路(74LS08, 74LS04)也需要连接+5V电源和地</p>
+            <p>5. 实际搭建时注意防止短路和虚焊，可使用面包板先测试</p>
+            <p>6. 如果使用共阳极数码管，需要将公共端接+5V，2ES102输出通过电阻接地</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>电子技术课程设计 - 双2ES102 1~12加法计数显示器引脚连接详细说明</p>
+        <p>© 2023 数字电路设计 - 引脚连接方法仅供参考，实际电路请根据芯片数据手册调整</p>
+    </footer>
+
+    <script>
+        // 七段数码管编码 (a,b,c,d,e,f,g)
+        const segmentEncoding = {
+            0: [1,1,1,1,1,1,0],
+            1: [0,1,1,0,0,0,0],
+            2: [1,1,0,1,1,0,1],
+            3: [1,1,1,1,0,0,1],
+            4: [0,1,1,0,0,1,1],
+            5: [1,0,1,1,0,1,1],
+            6: [1,0,1,1,1,1,1],
+            7: [1,1,1,0,0,0,0],
+            8: [1,1,1,1,1,1,1],
+            9: [1,1,1,1,0,1,1]
+        };
+        
+        // 当前计数值
+        let currentCount = 1;
+        let autoInterval = null;
+        
+        // 获取段元素
+        const tensSegments = {
+            'a': document.getElementById('tens-a'),
+            'b': document.getElementById('tens-b'),
+            'c': document.getElementById('tens-c'),
+            'd': document.getElementById('tens-d'),
+            'e': document.getElementById('tens-e'),
+            'f': document.getElementById('tens-f'),
+            'g': document.getElementById('tens-g')
+        };
+        
+        const unitsSegments = {
+            'a': document.getElementById('units-a'),
+            'b': document.getElementById('units-b'),
+            'c': document.getElementById('units-c'),
+            'd': document.getElementById('units-d'),
+            'e': document.getElementById('units-e'),
+            'f': document.getElementById('units-f'),
+            'g': document.getElementById('units-g')
+        };
+        
+        // 更新显示
+        function updateDisplay() {
+            // 计算十位和个位
+            const tens = currentCount >= 10 ? 1 : 0;
+            const units = currentCount >= 10 ? currentCount - 10 : currentCount;
+            
+            // 更新数字显示
+            const displayValue = currentCount < 10 ? `0${currentCount}` : currentCount.toString();
+            document.getElementById('current-count').textContent = displayValue;
+            
+            // 更新BCD码显示
+            const bcd = getBCD(currentCount);
+            document.getElementById('current-bcd-display').textContent = bcd;
+            
+            // 更新十位数码管
+            if (tens === 0) {
+                // 十位为0，消隐（所有段不亮）
+                Object.values(tensSegments).forEach(segment => {
+                    segment.classList.remove('active');
+                });
+            } else {
+                // 十位为1，显示数字1
+                const encoding = segmentEncoding[1];
+                const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+                
+                segments.forEach((segment, index) => {
+                    if (encoding[index] === 1) {
+                        tensSegments[segment].classList.add('active');
+                    } else {
+                        tensSegments[segment].classList.remove('active');
+                    }
+                });
+            }
+            
+            // 更新个位数码管
+            const unitsEncoding = segmentEncoding[units];
+            const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+            
+            segments.forEach((segment, index) => {
+                if (unitsEncoding[index] === 1) {
+                    unitsSegments[segment].classList.add('active');
+                } else {
+                    unitsSegments[segment].classList.remove('active');
+                }
+            });
+        }
+        
+        // 获取BCD码
+        function getBCD(value) {
+            if (value <= 9) {
+                return value.toString(2).padStart(4, '0');
+            } else {
+                switch(value) {
+                    case 10: return "1010";
+                    case 11: return "1011";
+                    case 12: return "1100";
+                    default: return "0001";
+                }
+            }
+        }
+        
+        // 增加计数
+        function incrementCount() {
+            currentCount++;
+            if (currentCount > 12) {
+                currentCount = 1;
+            }
+            updateDisplay();
+        }
+        
+        // 复位计数
+        function resetCount() {
+            currentCount = 1;
+            updateDisplay();
+        }
+        
+        // 自动计数
+        function toggleAutoCount() {
+            const autoBtn = document.getElementById('auto-clock');
+            
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
+                autoBtn.innerHTML = '<i class="fas fa-play"></i> 自动计数';
+                document.getElementById('manual-clock').disabled = false;
+            } else {
+                autoInterval = setInterval(incrementCount, 1000);
+                autoBtn.innerHTML = '<i class="fas fa-pause"></i> 停止自动';
+                document.getElementById('manual-clock').disabled = true;
+            }
+        }
+        
+        // 初始化
+        function init() {
+            // 绑定按钮事件
+            document.getElementById('manual-clock').addEventListener('click', incrementCount);
+            document.getElementById('reset-btn').addEventListener('click', resetCount);
+            document.getElementById('auto-clock').addEventListener('click', toggleAutoCount);
+            
+            // 初始显示
+            updateDisplay();
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
