@@ -1,0 +1,21 @@
+body {
+    background-color: aliceblue;
+    text-align: center;
+}
+header {
+    font-weight: bold;
+}
+.large {
+    font-size: 36pt;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+footer {
+    font-style: italic;
+    font-size: 12pt;
+}
+main {
+    margin-top: 20px;
+    font-size: 24pt;
+    margin-bottom: 20px;
+}
