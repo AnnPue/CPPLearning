@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>
+            Background
+        </title>
+        <link rel="stylesheet" href="Home.css">
+    </head>
+    <body>
+        <button id="red">R</button>
+        <button id="green">G</button>
+        <button id="blue">B</button>
+        <script>
+            let body = document.querySelector("body");
+            document.getElementById("red").addEventListener("click", function() {
+                body.style.backgroundColor = "rgb(180, 0, 0)";
+            });
+            document.getElementById("green").addEventListener("click", function() {
+                body.style.backgroundColor = "rgb(0, 180, 0)";
+            });
+            document.getElementById("blue").addEventListener("click", function() {
+                body.style.backgroundColor = "rgb(0, 0, 180)";
+            });
+        </script>
+        <main>
+            Return to <a href="Home.html">Home Page</a>.
+        </main>
+    </body>
