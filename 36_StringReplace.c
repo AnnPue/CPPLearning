@@ -143,9 +143,12 @@ void Solve(char **str){
             if (strcmp(str[0], "END\n") == 0) {
                 return; // 输入END时退出函数
             }
+            str[MAX_LEN - 1] = '\0'; // 确保字符串以'\0'结尾
             char *newline = strchr(str[i], '\n'); // 查找换行符，strchr返回指向换行符的指针
             if (newline == NULL) while(getchar() != '\n'); // 找不到换行符，说明输入超过最大长度，清空输入流
-            str[i][strcspn(str[i], "\n")] = '\0'; // 去除换行符
+
+            // strcspn返回首次出现换行符的位置索引
+            str[i][strcspn(str[i], "\n")] = '\0'; // 去除换行符，将其替换为字符串结束符'\0'，若
             printf("原串s%d的长度是%zu，内容是：%s\n", i + 1, strlen(str[i]), str[i]);// 回显输入
         }
         int index = 0; // 索引置0
