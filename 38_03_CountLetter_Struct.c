@@ -45,7 +45,7 @@ int main(){
             return 0;
         }
 
-        // 去除换行符并处理超长输入
+        str[MAX_LEN - 1] = '\0'; // 确保字符串以'\0'结尾
         char *newline = strchr(str, '\n');
         if (newline == NULL) while(getchar() != '\n');
         str[strcspn(str, "\n")] = '\0';
