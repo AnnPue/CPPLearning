@@ -40,19 +40,20 @@ int main() {
 
         pcsLongInput(str);
         size_t n = strlen(str);
-
         printf("字符串s1的长度是%zu，内容是：%s\n", n, str);    // 回显输入
         if (n > 1) mergeSort(str, 0, n - 1);                    // 若长度大于1则排序
         printf("按照ASCII码排好序的字母串是：\n%s\n", str);     // 输出排序后字符串
 
+        printf("以下根据排好序的字符串，进行构建循环单链表，并输出:\n");    // 提示开始构建链表
         LinkedList* list = createLinkedList();
         for (i = 0; i < n; i++){
             append(list, str[i]);
         }
         display(list);
+
+        printf("进行free释放循环单链表的每个节点。\n"); // 提示进行内存释放
         freeLinkedList(list);
     }
-    return 0;
 }
 
 // 处理超长输入
@@ -131,6 +132,7 @@ void append(LinkedList* list, int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (newNode == NULL) {
         fprintf(stderr, "节点创建失败！\n");
+        freeLinkedList(list);
         exit(1);
     }
     newNode->data = data;   // 设置节点数据
@@ -152,7 +154,6 @@ void append(LinkedList* list, int data) {
 
 // 输出循环单链表内容
 void display(LinkedList* list) {
-    printf("以下根据排好序的字符串，进行构建循环单链表，并输出:\n");
     if(list->head == NULL) { // 判断链表为空
         return;
     }
@@ -169,7 +170,6 @@ void display(LinkedList* list) {
 void freeLinkedList(LinkedList* list) {
     if (list->head == NULL) { // 判断链表为空
         free(list);
-        printf("进行free释放循环单链表的每个节点。\n"); // 提示内存已释放
         return;
     }
     Node* current = list->head;
@@ -182,5 +182,4 @@ void freeLinkedList(LinkedList* list) {
 
     list->head = NULL;  // 避免野指针
     free(list);
-    printf("进行free释放循环单链表的每个节点。\n"); // 提示内存已释放
 }
