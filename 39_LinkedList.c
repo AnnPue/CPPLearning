@@ -1,5 +1,6 @@
 /*
-本程序实现对输入的字母串进行ASCII码排序，并将排序后的字母存入循环单链表中，最后输出链表内容并释放内存。
+本程序实现对输入的字母串进行ASCII码排序，
+并将排序后的字母存入循环单链表中，最后输出链表内容并释放内存。
 */
 
 #include <stdio.h>
@@ -56,10 +57,10 @@ int main() {
 
 // 处理超长输入
 void pcsLongInput(char *str) {
-    str[MAX_LEN - 1] = '\0'; // 确保字符串以'\0'结尾
-    char *newline = strchr(str, '\n');
-    if (newline == NULL) while (getchar() != '\n');
-    str[strcspn(str, "\n")] = '\0'; // 移除换行符
+    str[strcspn(str, "\n")] = '\0';     // 移除换行符
+    if(strlen(str) == MAX_LEN - 1) {    // 判断是否输入超长
+        while (getchar() != '\n');      // 清空输入缓冲区
+    }
 }
 
 // 排序与合并子数组
@@ -152,6 +153,9 @@ void append(LinkedList* list, int data) {
 // 输出循环单链表内容
 void display(LinkedList* list) {
     printf("以下根据排好序的字符串，进行构建循环单链表，并输出:\n");
+    if(list->head == NULL) { // 判断链表为空
+        return;
+    }
     Node* temp = list->head;
     int i = 1;
     do {
@@ -163,6 +167,11 @@ void display(LinkedList* list) {
 
 // 释放循环单链表内存
 void freeLinkedList(LinkedList* list) {
+    if (list->head == NULL) { // 判断链表为空
+        free(list);
+        printf("进行free释放循环单链表的每个节点。\n"); // 提示内存已释放
+        return;
+    }
     Node* current = list->head;
     Node* nextNode;
     do {
