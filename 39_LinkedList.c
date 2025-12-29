@@ -16,6 +16,7 @@ typedef struct Node {
 
 typedef struct LinkedList {
     Node* head; // 指向循环单链表的头节点
+    Node* tail;
 } LinkedList;
 
 void pcsLongInput(char *);          // 处理超长输入
@@ -68,42 +69,23 @@ void pcsLongInput(char *str) {
 void merge(char *str, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
+    char L[n1], R[n2];
 
     // 将数据拷贝到临时子数组
-    char L[n1], R[n2];
     int i, j;
-    for (i = 0; i < n1; i++) {
-        L[i] = str[left + i];
-    }
-    for (j = 0; j < n2; j++) {
-        R[j] = str[mid + j + 1];
-    }
+    for (i = 0; i < n1; i++) L[i] = str[left + i];      // 将左子数组拷贝到L
+    for (j = 0; j < n2; j++) R[j] = str[mid + j + 1];   // 将右子数组拷贝到R
 
     i = j = 0;
     int k = left;
     while (i < n1 && j < n2) {  // 排序合并两个子数组
-        if (L[i] <= R[j]) {
-            str[k] = L[i];
-            i++;
-        }
-        else {
-            str[k] = R[j];
-            j++;
-        }
-        k++;
+        if (L[i] <= R[j]) str[k++] = L[i++];
+        else str[k++] = R[j++];
     }
 
     // 复制剩余元素
-    while (i < n1) {
-        str[k] = L[i];
-        k++;
-        i++;
-    }
-    while (j < n2) {
-        str[k] = R[j];
-        k++;
-        j++;
-    }
+    while (i < n1) str[k++] = L[i++];
+    while (j < n2) str[k++] = R[j++];
 }
 
 // 归并排序的递归函数
@@ -124,6 +106,7 @@ LinkedList* createLinkedList() {
         exit(1);
     }
     list->head = NULL;  // 初始化头指针为空
+    list->tail = NULL;  // 初始化尾指针为空
     return list;
 }
 
@@ -135,26 +118,24 @@ void append(LinkedList* list, int data) {
         freeLinkedList(list);
         exit(1);
     }
-    newNode->data = data;   // 设置节点数据
-    newNode->next = NULL;   // 初始化下一个节点指针为空
+    newNode->data = data;           // 设置节点数据
+    newNode->next = NULL;           // 初始化下一个节点指针为空
 
-    if (list->head == NULL) {   // 链表为空，添加第一个节点
-        list->head = newNode;
-        newNode->next = list->head;  // 形成循环
+    if (list->head == NULL) {       // 链表为空，添加第一个节点
+        list->head = newNode;       // 设置头指针
+        list->tail = newNode;       // 设置尾指针
+        newNode->next = list->head; // 形成循环
     }
     else {
-        Node* temp = list->head;
-        while (temp->next != list->head) {
-            temp = temp->next;      // 找到最后一个节点
-        }
-        temp->next = newNode;       // 将新节点添加到末尾
+        list->tail->next = newNode; // 将新节点添加到末尾
         newNode->next = list->head; // 形成循环
+        list->tail = newNode;       // 更新尾指针
     }
 }
 
 // 输出循环单链表内容
 void display(LinkedList* list) {
-    if(list->head == NULL) { // 判断链表为空
+    if(list->head == NULL) {        // 判断链表为空
         return;
     }
     Node* temp = list->head;
@@ -181,5 +162,6 @@ void freeLinkedList(LinkedList* list) {
     } while (current != list->head);
 
     list->head = NULL;  // 避免野指针
+    list->tail = NULL;  // 避免野指针
     free(list);
 }
