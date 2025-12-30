@@ -10,13 +10,13 @@
 const int MAX_LEN = 2000;
 
 typedef struct Node {
-    int data;           // 存储字母的ASCII码值
+    int data;           // ASCII码值
     struct Node* next;  // 指向下一个节点
 } Node;
 
 typedef struct LinkedList {
     Node* head; // 指向循环单链表的头节点
-    Node* tail;
+    Node* tail; // 指向循环单链表的尾节点
 } LinkedList;
 
 void pcsLongInput(char *);          // 处理超长输入
@@ -42,6 +42,7 @@ int main() {
         pcsLongInput(str);
         size_t n = strlen(str);
         printf("字符串s1的长度是%zu，内容是：%s\n", n, str);    // 回显输入
+
         if (n > 1) mergeSort(str, 0, n - 1);                    // 若长度大于1则排序
         printf("按照ASCII码排好序的字母串是：\n%s\n", str);     // 输出排序后字符串
 
@@ -60,7 +61,7 @@ int main() {
 // 处理超长输入
 void pcsLongInput(char *str) {
     str[strcspn(str, "\n")] = '\0';     // 移除换行符
-    if(strlen(str) == MAX_LEN - 1) {    // 判断是否输入超长
+    if(strlen(str) >= MAX_LEN - 1) {    // 判断是否输入超长
         while (getchar() != '\n');      // 清空输入缓冲区
     }
 }
@@ -149,7 +150,7 @@ void display(LinkedList* list) {
 
 // 释放循环单链表内存
 void freeLinkedList(LinkedList* list) {
-    if (list->head == NULL) { // 判断链表为空
+    if (list->head == NULL) {       // 判断链表为空
         free(list);
         return;
     }
