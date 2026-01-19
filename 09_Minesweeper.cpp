@@ -15,36 +15,47 @@
 #include <iostream>
 using namespace std;
 char board[1000][1000];
-int main() {
+int main()
+{
     int row, col, i, j;
     cin >> row >> col;
-    for (i = 0; i < row + 2; i++){
-        for (j = 0; j < col + 2; j++){
-            if(j==0 || j == col + 1 || i == 0 || i == row + 1){//在矩阵外围加一圈'.'(空白)
+    for (i = 0; i < row + 2; i++)
+    {
+        for (j = 0; j < col + 2; j++)
+        {
+            if (j == 0 || j == col + 1 || i == 0 || i == row + 1)
+            { // 在矩阵外围加一圈'.'(空白)
                 board[i][j] = '.';
             }
-            else {
-                cin >>board[i][j];
+            else
+            {
+                cin >> board[i][j];
             }
         }
     }
-    for (i = 1; i<= row;i++){
-        for (j =1;j<=col;j++){
-            if (board[i][j] == '*'){
-                cout<< '*';//如果当前位置是雷，则仍输出 `*`
+    for (i = 1; i <= row; i++)
+    {
+        for (j = 1; j <= col; j++)
+        {
+            if (board[i][j] == '*')
+            {
+                cout << '*'; // 如果当前位置是雷，则仍输出 `*`
                 continue;
             }
-            int m, n, count = 0; 
-            for (m = i - 1;m<i+2;m++){ //不是雷, 则检查格子周围九宫格, 
-                for(n = j - 1;n<j+2;n++){
-                    if (board[m][n] == '*'){//计数发现雷的数量
+            int m, n, count = 0;
+            for (m = i - 1; m < i + 2; m++)
+            { // 不是雷, 则检查格子周围九宫格,
+                for (n = j - 1; n < j + 2; n++)
+                {
+                    if (board[m][n] == '*')
+                    { // 计数发现雷的数量
                         count++;
                     }
                 }
             }
             cout << count;
         }
-        cout << endl;//完成一行后换行
+        cout << endl; // 完成一行后换行
     }
 }
 
