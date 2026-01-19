@@ -1,0 +1,5 @@
+ZhangShan  50
+LiWe  90
+WangPing  100
+DaWang  80
+FangWen  75
