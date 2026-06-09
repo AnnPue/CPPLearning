@@ -1,3 +1,6 @@
+/*
+情景：大学选课。每个人100豆子，可以给课程投豆子，报名人数超过上限则投豆子多者得。现在有课程人数上限a，预选人数b，请问至少投多少豆子选上课概率大
+*/
 #include <iostream>
 #include <cmath>
 using namespace std;
